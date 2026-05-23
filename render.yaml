@@ -1,9 +1,9 @@
 services:
   - type: web
     name: portfolio
-    runtime: static
-    publishPath: ./out
+    runtime: node
     buildCommand: npm run build
+    startCommand: npm start
     envVars:
       - key: NODE_VERSION
         value: 20
