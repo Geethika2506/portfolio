@@ -1,6 +1,7 @@
 services:
-  - type: static_site
+  - type: web
     name: portfolio
+    runtime: static
     staticPublishPath: ./out
     buildCommand: npm run build
     envVars:
