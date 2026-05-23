@@ -23,20 +23,36 @@ export default function ScrollyCanvas() {
   useEffect(() => {
     const loadedImages: HTMLImageElement[] = [];
     let loadedCount = 0;
+    let failedCount = 0;
     
     for (let i = 0; i < FRAME_COUNT; i++) {
       const img = new Image();
-      img.src = currentFrame(i);
+      img.crossOrigin = "anonymous";
+      const framePath = currentFrame(i);
+      img.src = framePath;
+      
       img.onload = () => {
         loadedCount++;
-        if (loadedCount === FRAME_COUNT) {
-          // Draw the first frame once all are loaded
+        if (loadedCount + failedCount === FRAME_COUNT) {
+          // Draw the first frame once all are loaded (or failed)
           if (canvasRef.current) {
              const ctx = canvasRef.current.getContext("2d");
-             if (ctx) renderFrame(0, ctx, loadedImages);
+             if (ctx && loadedImages[0]) renderFrame(0, ctx, loadedImages);
           }
         }
       };
+      
+      img.onerror = () => {
+        failedCount++;
+        console.warn(`Failed to load frame: ${framePath}`);
+        if (loadedCount + failedCount === FRAME_COUNT) {
+          if (canvasRef.current) {
+             const ctx = canvasRef.current.getContext("2d");
+             if (ctx && loadedImages[0]) renderFrame(0, ctx, loadedImages);
+          }
+        }
+      };
+      
       loadedImages.push(img);
     }
     setImages(loadedImages);
