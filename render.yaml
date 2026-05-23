@@ -2,7 +2,7 @@ services:
   - type: web
     name: portfolio
     runtime: static
-    staticPublishPath: ./out
+    publishPath: ./out
     buildCommand: npm run build
     envVars:
       - key: NODE_VERSION
