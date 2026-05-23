@@ -1,0 +1,8 @@
+services:
+  - type: static_site
+    name: portfolio
+    staticPublishPath: ./out
+    buildCommand: npm run build
+    envVars:
+      - key: NODE_VERSION
+        value: 20
